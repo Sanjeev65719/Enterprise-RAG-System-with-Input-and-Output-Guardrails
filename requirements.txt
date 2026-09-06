@@ -2,11 +2,7 @@ fastapi==0.111.0
 uvicorn==0.30.1
 PyYAML==6.0.1
 pydantic==2.7.1
-unstructured[all-docs]==0.15.0
 qdrant-client==1.11.0
 openai==1.40.0
 python-magic==0.4.27
-nltk==3.8.1
-spacy==3.7.5
 numpy==1.26.4
-scikit-learn==1.5.0
