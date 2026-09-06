@@ -13,8 +13,20 @@ class SentinelVectorStore:
     Enforces strict multi-tenant boundaries via payload filtering.
     """
 
-    def __init__(self, host: str = "localhost", port: int = 6333, collection_name: str = "sentinel_rag"):
-        self.client = QdrantClient(host=host, port=port)
+    def __init__(self, collection_name: str = "sentinel_rag"):
+        import os
+        url = os.getenv("QDRANT_URL")
+        api_key = os.getenv("QDRANT_API_KEY")
+
+        if url and api_key:
+            logger.info(f"Connecting to Qdrant Cloud at {url}...")
+            self.client = QdrantClient(url=url, api_key=api_key)
+        else:
+            host = os.getenv("QDRANT_HOST", "localhost")
+            port = int(os.getenv("QDRANT_PORT", 6333))
+            logger.info(f"Connecting to Qdrant Local at {host}:{port}...")
+            self.client = QdrantClient(host=host, port=port)
+
         self.collection_name = collection_name
         self._ensure_collection()
 
