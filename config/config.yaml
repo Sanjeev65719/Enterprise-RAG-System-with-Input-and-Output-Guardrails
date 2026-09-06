@@ -1,0 +1,21 @@
+system:
+  logging:
+    level: INFO
+    format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+
+  rag:
+    chunk_size: 512
+    chunk_overlap: 50
+    top_k: 5
+    rerank_top_n: 3
+
+  guardrails:
+    input:
+      pii_masking: enabled
+      safety_filter: enabled
+      domain_check: enabled
+    output:
+      hallucination_check: enabled
+      relevance_check: enabled
+      compliance_check: enabled
+      max_hallucination_threshold: 0.2

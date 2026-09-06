@@ -1,0 +1,20 @@
+[
+  {
+    "id": "case_1",
+    "query": "What is the enterprise refund policy for software licenses?",
+    "expected_context_ids": ["doc_ref_001", "doc_ref_002"],
+    "ground_truth": "Enterprise customers are eligible for a full refund within 30 days of purchase if the software does not meet the specified SLA requirements."
+  },
+  {
+    "id": "case_2",
+    "query": "How is PII handled in the data retention policy?",
+    "expected_context_ids": ["doc_ref_045"],
+    "ground_truth": "Personally Identifiable Information (PII) is encrypted at rest and purged automatically after 7 years of inactivity, unless a legal hold is active."
+  },
+  {
+    "id": "case_3",
+    "query": "What are the requirements for obtaining Administrative access to the production cluster?",
+    "expected_context_ids": ["doc_ref_102", "doc_ref_103"],
+    "ground_truth": "Administrative access requires a signed-off request from the VP of Engineering and completion of the Security Level 2 certification."
+  }
+]
