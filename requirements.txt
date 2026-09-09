@@ -4,4 +4,6 @@ openai
 pydantic
 fastapi
 uvicorn
+qdrant-client
 faiss-cpu
+
