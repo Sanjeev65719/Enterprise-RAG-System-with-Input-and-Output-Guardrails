@@ -31,7 +31,7 @@ COPY src ./src
 ENV PYTHONPATH=/app
 
 # Expose the port FastAPI runs on
-EXPOSE 8000
+EXPOSE 8501
 
 # Run the application using uvicorn
-CMD ["uvicorn", "src.api.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0"]
