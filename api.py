@@ -3,8 +3,19 @@ from pydantic import BaseModel
 from src.orchestrator.graph import RAGOrchestrator
 from src.core.logger import logger
 import uvicorn
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 
 app = FastAPI(title="Enterprise RAG Agent API")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 orchestrator = RAGOrchestrator()
 
 class QueryRequest(BaseModel):
@@ -18,9 +29,11 @@ class QueryResponse(BaseModel):
     message: str = None
     errors: list = []
 
-@app.get("/")
+@app.get("/api/health")
 async def root():
     return {"message": "Enterprise RAG Agent is Online", "status": "healthy"}
+
+app.mount("/", StaticFiles(directory="frontend", html=True), name="frontend")
 
 @app.post("/query", response_model=QueryResponse)
 async def ask_agent(request: QueryRequest):
