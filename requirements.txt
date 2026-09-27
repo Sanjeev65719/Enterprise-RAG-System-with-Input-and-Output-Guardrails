@@ -5,4 +5,4 @@ fastapi
 uvicorn
 qdrant-client
 faiss-cpu
-
+streamlit

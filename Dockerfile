@@ -26,7 +26,8 @@ ENV PATH="/opt/venv/bin:$PATH"
 
 # Copy the source code
 COPY src ./src
-
+COPY app.py .
+COPY api.py .
 # Set PYTHONPATH so that the app can find the src modules
 ENV PYTHONPATH=/app
 
