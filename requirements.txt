@@ -6,3 +6,4 @@ uvicorn
 qdrant-client
 faiss-cpu
 streamlit
+python-dotenv

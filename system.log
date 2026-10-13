@@ -1,1 +1,54 @@
 2026-09-16 21:35:40,667 - EnterpriseRAG - INFO - System logging initialized successfully.
+2026-09-17 12:09:45,207 - EnterpriseRAG - INFO - System logging initialized successfully.
+2026-09-17 12:09:52,746 - EnterpriseRAG - ERROR - OPENAI_API_KEY environment variable not set.
+2026-09-17 12:12:55,877 - EnterpriseRAG - INFO - System logging initialized successfully.
+2026-09-17 12:12:57,633 - EnterpriseRAG - INFO - Initialized LLMGuard with model: gpt-4o
+2026-09-17 12:12:57,636 - EnterpriseRAG - INFO - Initialized LLMGuard with model: gpt-4o
+2026-09-17 12:12:57,636 - EnterpriseRAG - INFO - Initialized LLMGuard with model: gpt-4o
+2026-09-17 12:12:57,637 - EnterpriseRAG - INFO - Initialized LLMGuard with model: gpt-4o
+2026-09-17 12:12:57,638 - EnterpriseRAG - INFO - Initialized LLMGuard with model: gpt-4o
+2026-09-17 12:12:57,639 - EnterpriseRAG - INFO - Initialized LLMGuard with model: gpt-4o
+2026-09-17 12:12:57,641 - EnterpriseRAG - INFO - Connecting to Qdrant Local at localhost:6333...
+2026-09-17 12:19:20,089 - EnterpriseRAG - INFO - System logging initialized successfully.
+2026-09-17 12:19:21,650 - EnterpriseRAG - INFO - Initialized LLMGuard with model: gpt-4o
+2026-09-17 12:19:21,652 - EnterpriseRAG - INFO - Initialized LLMGuard with model: gpt-4o
+2026-09-17 12:19:21,654 - EnterpriseRAG - INFO - Initialized LLMGuard with model: gpt-4o
+2026-09-17 12:19:21,656 - EnterpriseRAG - INFO - Initialized LLMGuard with model: gpt-4o
+2026-09-17 12:19:21,656 - EnterpriseRAG - INFO - Initialized LLMGuard with model: gpt-4o
+2026-09-17 12:19:21,657 - EnterpriseRAG - INFO - Initialized LLMGuard with model: gpt-4o
+2026-09-17 12:19:21,658 - EnterpriseRAG - INFO - Connecting to Qdrant Cloud at https://32029b76-f530-48bf-8898-cea8ee724fb7.eu-west-2-0.aws.cloud.qdrant.io...
+2026-09-17 12:19:22,595 - httpx - INFO - HTTP Request: GET https://32029b76-f530-48bf-8898-cea8ee724fb7.eu-west-2-0.aws.cloud.qdrant.io:6333 "HTTP/1.1 200 OK"
+2026-09-17 12:19:23,606 - httpx - INFO - HTTP Request: GET https://32029b76-f530-48bf-8898-cea8ee724fb7.eu-west-2-0.aws.cloud.qdrant.io:6333/collections "HTTP/1.1 200 OK"
+2026-09-17 12:19:23,612 - EnterpriseRAG - INFO - Initialized Generator with model: gpt-4o
+2026-09-17 16:07:14,835 - EnterpriseRAG - INFO - System logging initialized successfully.
+2026-09-17 16:07:16,124 - EnterpriseRAG - INFO - Initialized LLMGuard with model: gpt-4o
+2026-09-17 16:07:16,126 - EnterpriseRAG - INFO - Initialized LLMGuard with model: gpt-4o
+2026-09-17 16:07:16,127 - EnterpriseRAG - INFO - Initialized LLMGuard with model: gpt-4o
+2026-09-17 16:07:16,127 - EnterpriseRAG - INFO - Initialized LLMGuard with model: gpt-4o
+2026-09-17 16:07:16,128 - EnterpriseRAG - INFO - Initialized LLMGuard with model: gpt-4o
+2026-09-17 16:07:16,129 - EnterpriseRAG - INFO - Initialized LLMGuard with model: gpt-4o
+2026-09-17 16:07:16,130 - EnterpriseRAG - INFO - Connecting to Qdrant Cloud at https://32029b76-f530-48bf-8898-cea8ee724fb7.eu-west-2-0.aws.cloud.qdrant.io...
+2026-09-17 16:07:17,339 - httpx - INFO - HTTP Request: GET https://32029b76-f530-48bf-8898-cea8ee724fb7.eu-west-2-0.aws.cloud.qdrant.io:6333/collections "HTTP/1.1 200 OK"
+2026-09-17 16:07:17,340 - httpx - INFO - HTTP Request: GET https://32029b76-f530-48bf-8898-cea8ee724fb7.eu-west-2-0.aws.cloud.qdrant.io:6333 "HTTP/1.1 200 OK"
+2026-09-17 16:07:17,343 - EnterpriseRAG - INFO - Initialized Generator with model: gpt-4o
+2026-09-19 21:34:59,381 - EnterpriseRAG - INFO - System logging initialized successfully.
+2026-09-19 21:35:02,468 - EnterpriseRAG - ERROR - OPENAI_API_KEY environment variable not set.
+2026-09-19 21:48:32,642 - EnterpriseRAG - INFO - System logging initialized successfully.
+2026-09-19 21:48:34,010 - EnterpriseRAG - INFO - Initialized LLMGuard with model: gpt-4o
+2026-09-19 21:48:34,011 - EnterpriseRAG - INFO - Initialized LLMGuard with model: gpt-4o
+2026-09-19 21:48:34,012 - EnterpriseRAG - INFO - Initialized LLMGuard with model: gpt-4o
+2026-09-19 21:48:34,013 - EnterpriseRAG - INFO - Initialized LLMGuard with model: gpt-4o
+2026-09-19 21:48:34,014 - EnterpriseRAG - INFO - Initialized LLMGuard with model: gpt-4o
+2026-09-19 21:48:34,014 - EnterpriseRAG - INFO - Initialized LLMGuard with model: gpt-4o
+2026-09-19 21:48:34,016 - EnterpriseRAG - INFO - Connecting to Qdrant Cloud at https://32029b76-f530-48bf-8898-cea8ee724fb7.eu-west-2-0.aws.cloud.qdrant.io...
+2026-09-19 21:48:35,016 - httpx - INFO - HTTP Request: GET https://32029b76-f530-48bf-8898-cea8ee724fb7.eu-west-2-0.aws.cloud.qdrant.io:6333 "HTTP/1.1 200 OK"
+2026-09-19 21:48:36,056 - httpx - INFO - HTTP Request: GET https://32029b76-f530-48bf-8898-cea8ee724fb7.eu-west-2-0.aws.cloud.qdrant.io:6333/collections "HTTP/1.1 200 OK"
+2026-09-19 21:48:36,061 - EnterpriseRAG - INFO - Initialized Generator with model: gpt-4o
+2026-09-27 18:48:55,539 - EnterpriseRAG - INFO - System logging initialized successfully.
+2026-09-27 19:02:07,427 - EnterpriseRAG - INFO - System logging initialized successfully.
+2026-09-27 19:02:11,972 - EnterpriseRAG - ERROR - OPENAI_API_KEY environment variable not set.
+2026-09-30 12:15:18,143 - EnterpriseRAG - INFO - System logging initialized successfully.
+2026-09-30 12:17:19,644 - EnterpriseRAG - INFO - System logging initialized successfully.
+2026-09-30 12:29:25,942 - EnterpriseRAG - INFO - System logging initialized successfully.
+2026-09-30 12:31:08,286 - EnterpriseRAG - INFO - System logging initialized successfully.
+2026-09-30 12:31:09,477 - EnterpriseRAG - ERROR - OPENAI_API_KEY environment variable not set.

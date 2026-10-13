@@ -1,9 +1,14 @@
 import os
+import sys
+from pathlib import Path
 from typing import List, Optional, Dict, Any
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 from dotenv import load_dotenv
 import uvicorn
+
+# Ensure the project root is on sys.path so `src` package is importable
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from src.orchestrator.graph import RAGOrchestrator
 
