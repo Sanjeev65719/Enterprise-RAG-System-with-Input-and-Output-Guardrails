@@ -1,8 +1,12 @@
 import logging
 import yaml
 import os
+from pathlib import Path
 from typing import List, Dict, Any, Tuple
 from dataclasses import dataclass
+
+# Resolve config path relative to this file, not the CWD
+_DEFAULT_CONFIG_PATH = str(Path(__file__).resolve().parent.parent.parent / "config" / "config.yaml")
 
 from src.core.logger import logger
 from src.ingestion.indexing.store import SentinelVectorStore
@@ -16,13 +20,15 @@ class RetrievedDocument:
 class RAGEngine:
     """Core RAG logic: Query optimization, Retrieval, and Re-ranking."""
 
-    def __init__(self, config_path: str = "config/config.yaml"):
+    def __init__(self, config_path: str = None):
         self.config = self._load_config(config_path)
         # Using the real SentinelVectorStore implemented in the ingestion phase
         self.vector_db = SentinelVectorStore()
         self.top_k = self.config['system']['rag']['top_k']
 
-    def _load_config(self, path: str) -> Dict:
+    def _load_config(self, path: str = None) -> Dict:
+        if path is None:
+            path = _DEFAULT_CONFIG_PATH
         with open(path, 'r') as f:
             return yaml.safe_load(f)
 
