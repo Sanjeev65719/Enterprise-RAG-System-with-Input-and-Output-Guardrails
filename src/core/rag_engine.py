@@ -29,8 +29,37 @@ class RAGEngine:
     def _load_config(self, path: str = None) -> Dict:
         if path is None:
             path = _DEFAULT_CONFIG_PATH
-        with open(path, 'r') as f:
-            return yaml.safe_load(f)
+        if os.path.exists(path):
+            with open(path, 'r') as f:
+                return yaml.safe_load(f)
+        logger.warning(f"Config file not found at '{path}'. Falling back to default configuration.")
+        return {
+            'system': {
+                'logging': {
+                    'level': 'INFO',
+                    'format': '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+                },
+                'rag': {
+                    'chunk_size': 512,
+                    'chunk_overlap': 50,
+                    'top_k': 5,
+                    'rerank_top_n': 3
+                },
+                'guardrails': {
+                    'input': {
+                        'pii_masking': 'enabled',
+                        'safety_filter': 'enabled',
+                        'domain_check': 'enabled'
+                    },
+                    'output': {
+                        'hallucination_check': 'enabled',
+                        'relevance_check': 'enabled',
+                        'compliance_check': 'enabled',
+                        'max_hallucination_threshold': 0.2
+                    }
+                }
+            }
+        }
 
     def retrieve(self, query: str, org_id: str, user_id: str, tags: List[str] = None) -> List[RetrievedDocument]:
         """Performs hybrid retrieval with strict multi-tenant boundaries."""

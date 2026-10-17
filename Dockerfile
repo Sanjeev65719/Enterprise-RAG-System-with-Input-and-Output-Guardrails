@@ -24,7 +24,8 @@ WORKDIR /app
 COPY --from=builder /opt/venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 
-# Copy the source code
+# Copy the source code and configuration
+COPY config ./config
 COPY src ./src
 COPY app.py .
 COPY api.py .
