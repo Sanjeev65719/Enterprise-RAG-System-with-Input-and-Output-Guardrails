@@ -24,16 +24,19 @@ WORKDIR /app
 COPY --from=builder /opt/venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 
-# Copy the source code and configuration
+# Copy the source code, configuration, and frontend
 COPY config ./config
 COPY src ./src
 COPY app.py .
 COPY api.py .
+COPY frontend ./frontend
+
 # Set PYTHONPATH so that the app can find the src modules
 ENV PYTHONPATH=/app
+ENV PORT=8000
 
-# Expose the port FastAPI runs on
-EXPOSE 8501
+# Expose default port
+EXPOSE 8000
 
-# Run the application using uvicorn
-CMD ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0"]
+# Run the FastAPI application using uvicorn (compatible with Render's dynamic $PORT)
+CMD ["sh", "-c", "uvicorn api:app --host 0.0.0.0 --port ${PORT:-8000}"]

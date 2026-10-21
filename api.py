@@ -16,10 +16,13 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 orchestrator = RAGOrchestrator()
+
 
 class QueryRequest(BaseModel):
     query: str
+
 
 class QueryResponse(BaseModel):
     status: str
@@ -29,11 +32,12 @@ class QueryResponse(BaseModel):
     message: str = None
     errors: list = []
 
+
 @app.get("/api/health")
-async def root():
+async def health_check():
+    """Render health-check endpoint."""
     return {"message": "Enterprise RAG Agent is Online", "status": "healthy"}
 
-app.mount("/", StaticFiles(directory="frontend", html=True), name="frontend")
 
 @app.post("/query", response_model=QueryResponse)
 async def ask_agent(request: QueryRequest):
@@ -45,6 +49,10 @@ async def ask_agent(request: QueryRequest):
         logger.error(f"API Error: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
+
+# ── Static frontend — MUST be mounted LAST so API routes take priority ──
+app.mount("/", StaticFiles(directory="frontend", html=True), name="frontend")
+
+
 if __name__ == "__main__":
-    # Run on localhost:8000
     uvicorn.run(app, host="0.0.0.0", port=8000)
