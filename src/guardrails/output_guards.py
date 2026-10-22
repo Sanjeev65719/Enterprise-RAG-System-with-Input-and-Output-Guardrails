@@ -18,22 +18,38 @@ class OutputGuardrail:
         raise NotImplementedError
 
 class FactCheckerAgent(OutputGuardrail):
-    """Verifies that the response is grounded in the provided context (NLI)."""
+    """Verifies that the response is faithfully grounded or factually/mathematically accurate."""
     def __init__(self):
         self.llm = LLMGuard()
 
     def check(self, response: str, context: List[str]) -> GuardrailResult:
         logger.info("Running Fact-Checker Agent...")
-        context_text = "\n\n".join(context)
-        system_prompt = (
-            "You are a high-assurance auditor. Your task is to verify if the response is faithfully grounded "
-            "in the provided context. Every claim in the response must be explicitly supported by the context. "
-            "If the response contains information not found in the context, it is a hallucination. "
-            "Answer YES if the response is faithful, and NO if it contains hallucinations. "
-            "Provide a concise reason starting with the answer (e.g., 'NO: The claim about X is not in the context')."
-        )
+        active_chunks = [c for c in context if c and c.strip()]
+        context_text = "\n\n".join(active_chunks)
 
-        allowed, reason = self.llm.validate(system_prompt, response, context=context_text)
+        if active_chunks:
+            system_prompt = (
+                "You are a high-assurance auditor. Your task is to verify the factual grounding of the response:\n"
+                "1. If the response makes claims regarding enterprise policies, internal processes, or organization data, "
+                "those claims must be faithfully grounded in the provided context.\n"
+                "2. If the response provides general arithmetic, mathematical calculations, scientific principles, "
+                "or general technical reasoning, verify that it is mathematically and factually accurate and does not "
+                "hallucinate fake internal enterprise records.\n"
+                "Answer YES if the response is faithful and factually sound. "
+                "Answer NO if it contains hallucinations or false claims.\n"
+                "Provide a concise reason starting with the answer (e.g., 'NO: Claim X is contradicted or ungrounded')."
+            )
+            allowed, reason = self.llm.validate(system_prompt, response, context=context_text)
+        else:
+            system_prompt = (
+                "You are a high-assurance auditor. Context is empty because this is a general arithmetic, "
+                "scientific, or general factual query. Verify that the response is mathematically and factually accurate, "
+                "coherent, and does not fabricate fictitious internal enterprise records.\n"
+                "Answer YES if the response is accurate and coherent. "
+                "Answer NO if it contains mathematical errors, hallucinations, or falsehoods.\n"
+                "Provide a concise reason starting with the answer (e.g., 'NO: Arithmetic calculation is incorrect')."
+            )
+            allowed, reason = self.llm.validate(system_prompt, response)
 
         if not allowed:
             return GuardrailResult(allowed=False, reason=reason)
@@ -49,14 +65,13 @@ class RelevanceAgent(OutputGuardrail):
     def check(self, response: str, context: List[str]) -> GuardrailResult:
         logger.info("Running Relevance Agent...")
         # Note: The context is passed for reference, but the primary check is response vs query.
-        # In a real scenario, the query would be passed here. Since the base class
-        # signature doesn't include the query, we rely on the LLM to judge the response's utility.
         system_prompt = (
             "You are a relevance auditor. Your task is to determine if the response "
-            "actually answers a likely user query in a helpful and complete manner. "
-            "Answer YES if the response is relevant and helpful, and NO if it is generic, "
-            "too brief, or fails to provide a substantial answer. "
-            "Provide a concise reason starting with the answer (e.g., 'NO: Response is too generic')."
+            "answers a likely user query in an accurate, helpful, and appropriate manner. "
+            "Concise, direct answers to arithmetic, scientific, or factual queries (e.g., mathematical results) are acceptable. "
+            "Answer YES if the response is relevant and helpful, and NO if it is evasive, completely off-topic, "
+            "or meaningless gibberish. "
+            "Provide a concise reason starting with the answer (e.g., 'NO: Response is off-topic')."
         )
 
         allowed, reason = self.llm.validate(system_prompt, response)

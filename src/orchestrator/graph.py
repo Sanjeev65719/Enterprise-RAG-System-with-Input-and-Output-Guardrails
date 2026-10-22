@@ -39,7 +39,7 @@ class RAGOrchestrator:
         self.librarian = RAGEngine()
         self.generator = Generator()
 
-    def run(self, query: str, org_id: str, user_id: str, acl_tags: List[str] = None) -> Dict[str, Any]:
+    def run(self, query: str, org_id: str = "default-org", user_id: str = "default-user", acl_tags: List[str] = None) -> Dict[str, Any]:
         # Initialize High-Assurance State
         state = PipelineState(raw_query=query)
         logger.info(f"Request started: {state.request_id} (Org: {org_id})")

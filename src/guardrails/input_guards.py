@@ -79,23 +79,32 @@ class SafetyAgent(InputGuardrail):
 
 
 class DomainFilterAgent(InputGuardrail):
-    """Ensures the query is relevant to the enterprise domain."""
+    """
+    Evaluates query intent and scope.
+    Permits enterprise operations, arithmetic, mathematics, science, engineering,
+    technology, and general factual/intellectual inquiries, while strictly detecting
+    and rejecting malicious, destructive, harmful, illegal, or abusive user queries.
+    """
     def __init__(self):
         self.llm = LLMGuard()
 
     def check(self, text: str) -> GuardrailResult:
         logger.info("Running Domain Filter Agent...")
         system_prompt = (
-            "You are a domain filter. Your task is to determine if the user's query is related to "
-            "the enterprise domain (security, data privacy, PII, company policies, cloud infrastructure, "
-            "or general corporate operations). Answer YES if it is relevant, and NO if it is irrelevant. "
-            "Provide a concise reason starting with the answer (e.g., 'NO: Query is about cooking')."
+            "You are an enterprise scope and safety auditor. Your task is to evaluate the user's query:\n"
+            "1. ALLOW queries regarding enterprise operations, company policies, security, IT/cloud, "
+            "as well as arithmetic, mathematics, science, engineering, technology, coding, and general factual reasoning.\n"
+            "2. STRICTLY REJECT queries that are malicious, harmful, abusive, illegal, destructive, toxic, "
+            "or intended to cause harm, breach systems, or engage in illicit behavior.\n"
+            "Answer YES if the query is legitimate, safe, and allowed (including arithmetic, scientific, and general queries). "
+            "Answer NO if the query is malicious, harmful, or illicit.\n"
+            "Provide a concise reason starting with the answer (e.g., 'NO: Malicious query attempting unauthorized exploit')."
         )
 
         allowed, reason = self.llm.validate(system_prompt, text)
 
         if not allowed:
-            logger.warning(f"Domain violation detected: {reason}")
+            logger.warning(f"Domain filter rejection: {reason}")
             return GuardrailResult(allowed=False, reason=reason)
 
         return GuardrailResult(allowed=True)
