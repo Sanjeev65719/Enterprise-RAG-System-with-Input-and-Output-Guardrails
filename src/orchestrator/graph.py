@@ -56,17 +56,21 @@ class RAGOrchestrator:
 
         # 2. THE LIBRARIAN (Retrieval Guard)
         # Retrieve structured documents with strict boundaries
-        docs = self.librarian.get_structured_context(
-            query=state.sanitized_query,
-            org_id=org_id,
-            user_id=user_id,
-            tags=acl_tags
-        )
-
-        # Librarian audits the retrieved chunks for relevance
-        state.retrieved_docs = [d.__dict__ for d in docs]
-        state.filtered_docs = state.retrieved_docs  # For now, assume all are relevant
-        state.add_audit_log("Librarian", "APPROVED", f"Retrieved {len(state.filtered_docs)} relevant chunks.")
+        try:
+            docs = self.librarian.get_structured_context(
+                query=state.sanitized_query,
+                org_id=org_id,
+                user_id=user_id,
+                tags=acl_tags
+            )
+            state.retrieved_docs = [d.__dict__ for d in docs]
+            state.filtered_docs = state.retrieved_docs
+            state.add_audit_log("Librarian", "APPROVED", f"Retrieved {len(state.filtered_docs)} relevant chunks.")
+        except Exception as e:
+            logger.warning(f"Librarian retrieval warning (Vector DB unavailable or query issue): {str(e)}")
+            state.retrieved_docs = []
+            state.filtered_docs = []
+            state.add_audit_log("Librarian", "WARNING", f"Vector retrieval fallback: {str(e)}")
 
         # 3. THE VERIFIED LOOP (Generator <-> Auditor)
         while state.generation_attempts < 3:
@@ -106,13 +110,27 @@ class RAGOrchestrator:
 
     def _finalize(self, state: PipelineState) -> Dict[str, Any]:
         """Converts the PipelineState into the final API response."""
+        context_str = "\n\n".join([d.get('content', '') for d in state.filtered_docs if d.get('content')]) if state.filtered_docs else None
+
+        rejection_reason = None
+        if state.final_verdict != Verdict.APPROVED:
+            for entry in reversed(state.audit_log):
+                if entry.status in ("REJECTED", "ERROR"):
+                    rejection_reason = entry.reason
+                    break
+            if not rejection_reason:
+                rejection_reason = "Request was rejected by enterprise safety or compliance guardrails."
+
         return {
             "request_id": str(state.request_id),
             "verdict": state.final_verdict.value,
             "response": state.current_answer,
+            "context": context_str,
             "iterations": state.generation_attempts,
             "audit_trail": [entry.model_dump() for entry in state.audit_log],
-            "status": "success" if state.final_verdict == Verdict.APPROVED else "rejected"
+            "status": "success" if state.final_verdict == Verdict.APPROVED else "rejected",
+            "message": rejection_reason,
+            "errors": [rejection_reason] if rejection_reason else []
         }
 
 if __name__ == "__main__":

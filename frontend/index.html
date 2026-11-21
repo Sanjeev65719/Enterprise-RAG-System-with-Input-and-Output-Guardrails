@@ -1138,14 +1138,30 @@
       const res = await fetch('/query', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({query: text})
+        body: JSON.stringify({
+          query: text,
+          org_id: 'default-org-123',
+          user_id: 'user-456'
+        })
       });
-      const data = await res.json();
+
+      let data;
+      const contentType = res.headers.get('content-type') || '';
+      if (contentType.includes('application/json')) {
+        data = await res.json();
+      } else {
+        const rawText = await res.text();
+        if (!res.ok) {
+          throw new Error(`Server returned HTTP ${res.status}: ${rawText.slice(0, 200) || res.statusText}`);
+        }
+        data = { status: 'error', message: rawText };
+      }
+
       document.getElementById(loadingId)?.remove();
 
-      const isError = data.status !== 'success';
+      const isError = !res.ok || data.status !== 'success';
       const responseText = isError
-        ? (data.message || (data.errors && data.errors.join(', ')) || 'Your request was blocked by the Sentry or Auditor perimeter guardrails.')
+        ? (data.message || (data.errors && data.errors.join(', ')) || data.detail || (res.ok ? 'Your request was blocked by the Sentry or Auditor perimeter guardrails.' : `HTTP ${res.status} Error`))
         : (data.response || 'No response generated.');
 
       chatContainer.insertAdjacentHTML('beforeend', createAiBubble(responseText, isError, data.context, data.iterations));
