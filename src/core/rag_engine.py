@@ -5,6 +5,12 @@ from pathlib import Path
 from typing import List, Dict, Any, Tuple
 from dataclasses import dataclass
 
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
+
 # Resolve config path relative to this file, not the CWD
 _DEFAULT_CONFIG_PATH = str(Path(__file__).resolve().parent.parent.parent / "config" / "config.yaml")
 
@@ -65,16 +71,14 @@ class RAGEngine:
         """Performs hybrid retrieval with strict multi-tenant boundaries."""
         logger.info(f"Retrieving context for query: {query} (Org: {org_id})")
 
-        # 1. Convert query to vector using OpenAI
-        # For simplicity, we'll use the same logic as the Ingestor but as a helper
-        from openai import OpenAI
-        client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-
-        response = client.embeddings.create(
-            input=[query],
-            model="text-embedding-3-large"
-        )
-        query_vector = response.data[0].embedding
+        # 1. Convert query to vector using local FastEmbed (or configured embedder)
+        try:
+            from src.core.embedder import get_embedder
+            embedder = get_embedder()
+            query_vector = embedder.embed_query(query)
+        except Exception as e:
+            logger.warning(f"Vector embedding generation failed ({str(e)}); proceeding without vector context.")
+            return []
 
         # 2. Perform Filtered Search in Qdrant
         results = self.vector_db.filtered_search(

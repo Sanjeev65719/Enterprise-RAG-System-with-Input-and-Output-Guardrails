@@ -19,7 +19,7 @@ app = FastAPI(title="Enterprise RAG Agent API")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_credentials=True,
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -55,11 +55,16 @@ class QueryResponse(BaseModel):
 @app.get("/api/health")
 async def health_check():
     """Render health-check endpoint."""
-    has_key = bool(os.getenv("OPENAI_API_KEY"))
+    has_openai = bool(os.getenv("OPENAI_API_KEY"))
+    has_groq = bool(os.getenv("GROQ_API_KEY"))
+    provider = os.getenv("LLM_PROVIDER", "groq" if (has_groq and not has_openai) else ("openai" if has_openai else "none"))
     return {
         "message": "Enterprise RAG Agent is Online",
         "status": "healthy",
-        "openai_configured": has_key
+        "provider": provider,
+        "llm_configured": has_openai or has_groq,
+        "openai_configured": has_openai,
+        "groq_configured": has_groq
     }
 
 

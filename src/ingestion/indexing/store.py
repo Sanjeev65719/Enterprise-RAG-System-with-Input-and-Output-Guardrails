@@ -1,10 +1,15 @@
+import os
 import logging
 from typing import List, Dict, Any, Optional
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
 from qdrant_client import QdrantClient
 from qdrant_client.http import models
-from openai import OpenAI
 from src.ingestion.indexing.schema import VectorPayload, DocumentMetadata
-
+from src.core.embedder import get_embedder
 from src.core.logger import logger
 
 class SentinelVectorStore:
@@ -13,8 +18,13 @@ class SentinelVectorStore:
     Enforces strict multi-tenant boundaries via payload filtering.
     """
 
-    def __init__(self, collection_name: str = "sentinel_rag"):
-        import os
+    def __init__(
+        self,
+        collection_name: Optional[str] = None,
+        host: Optional[str] = None,
+        port: Optional[int] = None,
+        vector_size: Optional[int] = None
+    ):
         url = os.getenv("QDRANT_URL")
         api_key = os.getenv("QDRANT_API_KEY")
 
@@ -22,39 +32,64 @@ class SentinelVectorStore:
             logger.info(f"Connecting to Qdrant Cloud at {url}...")
             self.client = QdrantClient(url=url, api_key=api_key)
         else:
-            host = os.getenv("QDRANT_HOST", "localhost")
-            port = int(os.getenv("QDRANT_PORT", 6333))
-            logger.info(f"Connecting to Qdrant Local at {host}:{port}...")
-            self.client = QdrantClient(host=host, port=port)
+            q_host = host or os.getenv("QDRANT_HOST", "localhost")
+            q_port = port or int(os.getenv("QDRANT_PORT", 6333))
+            logger.info(f"Connecting to Qdrant Local at {q_host}:{q_port}...")
+            self.client = QdrantClient(host=q_host, port=q_port)
 
-        self.collection_name = collection_name
+        embedder = get_embedder()
+        self.vector_size = vector_size or embedder.dimension
+        self.collection_name = collection_name or os.getenv("QDRANT_COLLECTION", "sentinel_rag")
         self._ensure_collection()
 
     def _ensure_collection(self):
         """Initializes the collection with the correct vector configuration."""
-        collections = self.client.get_collections().collections
-        exists = any(c.name == self.collection_name for c in collections)
+        try:
+            collections = self.client.get_collections().collections
+            exists = any(c.name == self.collection_name for c in collections)
 
-        if not exists:
-            logger.info(f"Creating collection {self.collection_name}...")
-            # Using 3072 dimensions for text-embedding-3-large
-            self.client.create_collection(
-                collection_name=self.collection_name,
-                vectors_config=models.VectorParams(size=3072, distance=models.Distance.COSINE),
+            if exists:
+                try:
+                    info = self.client.get_collection(self.collection_name)
+                    existing_size = getattr(info.config.params.vectors, 'size', None)
+                    if existing_size and existing_size != self.vector_size:
+                        logger.warning(
+                            f"Collection '{self.collection_name}' has vector dimension {existing_size}, "
+                            f"but current embedder produces {self.vector_size}. Switching collection name to '{self.collection_name}_{self.vector_size}'."
+                        )
+                        self.collection_name = f"{self.collection_name}_{self.vector_size}"
+                        self._ensure_collection()
+                        return
+                except Exception as e:
+                    logger.warning(f"Could not inspect existing collection config: {e}")
+
+            if not exists:
+                logger.info(f"Creating collection '{self.collection_name}' with vector size {self.vector_size}...")
+                self.client.create_collection(
+                    collection_name=self.collection_name,
+                    vectors_config=models.VectorParams(size=self.vector_size, distance=models.Distance.COSINE),
+                )
+        except Exception as e:
+            logger.warning(
+                f"Could not connect to Qdrant or initialize collection '{self.collection_name}': {e}. "
+                "System will start, but vector searches will be unavailable until Qdrant is reachable."
             )
 
     def upsert(self, vector: List[float], payload: VectorPayload):
         """Inserts or updates a vector with its associated payload."""
-        self.client.upsert(
-            collection_name=self.collection_name,
-            points=[
-                models.PointStruct(
-                    id=str(payload.metadata.doc_id), # Simplified; usually a unique chunk ID
-                    vector=vector,
-                    payload=payload.model_dump()
-                )
-            ]
-        )
+        try:
+            self.client.upsert(
+                collection_name=self.collection_name,
+                points=[
+                    models.PointStruct(
+                        id=str(payload.metadata.doc_id), # Simplified; usually a unique chunk ID
+                        vector=vector,
+                        payload=payload.model_dump()
+                    )
+                ]
+            )
+        except Exception as e:
+            logger.warning(f"Could not upsert vector into collection '{self.collection_name}': {e}")
 
     def filtered_search(self, query_vector: List[float], org_id: str, user_id: str, tags: List[str] = None, limit: int = 5):
         """
@@ -84,22 +119,21 @@ class SentinelVectorStore:
 class BatchIngestor:
     """Handles efficient batch embedding and indexing."""
 
-    def __init__(self, vector_store: SentinelVectorStore, openai_api_key: str):
+    def __init__(self, vector_store: SentinelVectorStore, openai_api_key: Optional[str] = None):
         self.store = vector_store
-        self.openai_client = OpenAI(api_key=openai_api_key)
+        self.embedder = get_embedder()
 
     def ingest_chunks(self, chunks: List[str], metadata: DocumentMetadata):
         """
-        Embeds and indexes a list of chunks in batches.
+        Embeds and indexes a list of chunks in batches using the configured embedder.
         """
-        logger.info(f"Indexing {len(chunks)} chunks...")
+        if not chunks:
+            return
 
-        # Batch embed using OpenAI
-        response = self.openai_client.embeddings.create(
-            input=chunks,
-            model="text-embedding-3-large"
-        )
-        embeddings = [data.embedding for data in response.data]
+        logger.info(f"Indexing {len(chunks)} chunks using {self.embedder.provider} ({self.embedder.model_name})...")
+
+        # Batch embed using local FastEmbed (or OpenAI if configured)
+        embeddings = self.embedder.embed_documents(chunks)
 
         # Upsert to Vector Store
         for i, vector in enumerate(embeddings):

@@ -1,8 +1,8 @@
 import os
 import logging
 from typing import List, Dict, Any, Optional
-from openai import OpenAI
 from src.core.logger import logger
+from src.core.llm_client import get_llm_client_and_model
 
 class Generator:
     """
@@ -10,15 +10,9 @@ class Generator:
     Focuses on grounding, conciseness, and strict adherence to context.
     """
 
-    def __init__(self, model_name: str = "gpt-4o"):
-        self.model_name = model_name
-        self.api_key = os.getenv("OPENAI_API_KEY")
-        if not self.api_key:
-            logger.error("OPENAI_API_KEY environment variable not set.")
-            raise ValueError("OPENAI_API_KEY is required for the Generator.")
-
-        self.client = OpenAI(api_key=self.api_key)
-        logger.info(f"Initialized Generator with model: {self.model_name}")
+    def __init__(self, model_name: Optional[str] = None):
+        self.client, self.model_name, self.provider = get_llm_client_and_model(model_name)
+        logger.info(f"Initialized Generator with provider '{self.provider}' and model: {self.model_name}")
 
     def generate(self, query: str, context_docs: List[Dict[str, Any]], correction_notes: Optional[str] = None) -> str:
         """
@@ -45,7 +39,7 @@ class Generator:
         if correction_notes:
             system_prompt += f"\n\nCRITICAL CORRECTION: The previous attempt was rejected for the following reason: {correction_notes}. Please correct this specific error in your next response."
 
-        # 3. Real OpenAI API Call
+        # 3. LLM API Call
         try:
             response = self.client.chat.completions.create(
                 model=self.model_name,
@@ -57,5 +51,5 @@ class Generator:
             )
             return response.choices[0].message.content
         except Exception as e:
-            logger.error(f"OpenAI API call failed: {str(e)}")
+            logger.error(f"{self.provider.upper()} API call failed: {str(e)}")
             return f"Error generating response: {str(e)}"

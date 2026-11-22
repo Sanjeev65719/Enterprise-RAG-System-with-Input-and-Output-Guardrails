@@ -1,22 +1,15 @@
-import os
 from typing import Tuple, Optional
-from openai import OpenAI
 from src.core.logger import logger
+from src.core.llm_client import get_llm_client_and_model
 
 class LLMGuard:
     """
     Utility class for performing high-assurance binary validation checks using an LLM.
     Returns a boolean indicating if the check passed and a reason for the decision.
     """
-    def __init__(self, model_name: str = "gpt-4o"):
-        self.model_name = model_name
-        self.api_key = os.getenv("OPENAI_API_KEY")
-        if not self.api_key:
-            logger.error("OPENAI_API_KEY environment variable not set.")
-            raise ValueError("OPENAI_API_KEY is required for LLMGuard.")
-
-        self.client = OpenAI(api_key=self.api_key)
-        logger.info(f"Initialized LLMGuard with model: {self.model_name}")
+    def __init__(self, model_name: Optional[str] = None):
+        self.client, self.model_name, self.provider = get_llm_client_and_model(model_name)
+        logger.info(f"Initialized LLMGuard with provider '{self.provider}' and model: {self.model_name}")
 
     def validate(self, system_prompt: str, user_input: str, context: Optional[str] = None) -> Tuple[bool, str]:
         """

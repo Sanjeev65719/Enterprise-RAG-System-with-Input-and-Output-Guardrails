@@ -1,6 +1,6 @@
 import logging
 import hashlib
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 from pathlib import Path
 
 from src.core.logger import logger
@@ -17,7 +17,7 @@ class IngestionPipeline:
     Implements the flow: Parse -> Normalize -> Chunk -> Embed -> Index.
     """
 
-    def __init__(self, openai_api_key: str, qdrant_host: str = "localhost"):
+    def __init__(self, openai_api_key: Optional[str] = None, qdrant_host: str = "localhost"):
         self.parser = UnstructuredParser()
         self.normalizer = DocumentNormalizer()
         self.chunker = SemanticChunker()
@@ -28,9 +28,10 @@ class IngestionPipeline:
         """Calculates SHA-256 hash for duplicate detection."""
         return hashlib.sha256(text.encode()).hexdigest()
 
-    def process_file(self, file_path: str, org_id: str, user_id: str, acl_tags: List[str] = None) -> bool:
+    def process_document(self, file_path: str, org_id: str = "default-org-123", user_id: str = "user-456", acl_tags: Optional[List[str]] = None) -> List[Any]:
         """
-        Processes a single file through the high-assurance pipeline.
+        Processes a single file through the high-assurance pipeline and returns the semantic chunks.
+        Provides backward compatibility for tests and integration callers.
         """
         try:
             logger.info(f"Starting high-assurance ingestion for: {file_path}")
@@ -44,7 +45,6 @@ class IngestionPipeline:
             normalized_text = self.normalizer.normalize(elements)
 
             # 3. Semantic Chunking
-            # Initial metadata for the document
             base_metadata = {
                 "source": file_path,
                 "filename": Path(file_path).name,
@@ -52,32 +52,31 @@ class IngestionPipeline:
             semantic_chunks = self.chunker.chunk(normalized_text, base_metadata)
 
             # 4. Indexing with Data Boundaries
-            # We prepare the metadata for the VectorPayload
             doc_metadata = DocumentMetadata(
                 org_id=org_id,
                 user_id=user_id,
                 acl_tags=acl_tags or [],
                 source_url=file_path,
-                # content_hash is handled per chunk in a real scenario,
-                # but we provide a doc-level hash here for simplicity
                 content_hash=self._calculate_hash(normalized_text)
             )
 
             chunk_texts = [chunk.content for chunk in semantic_chunks]
-            self.ingestor.ingest_chunks(chunk_texts, doc_metadata)
-
-            # 5. Verification Gate 1: Integrity Check
-            # Simplified: Ensure we actually created chunks
-            if not chunk_texts:
-                logger.warning(f"Ingestion produced no chunks for {file_path}")
-                return False
+            if chunk_texts:
+                self.ingestor.ingest_chunks(chunk_texts, doc_metadata)
 
             logger.info(f"Successfully ingested {len(chunk_texts)} chunks from {file_path}")
-            return True
+            return semantic_chunks
 
         except Exception as e:
             logger.error(f"Pipeline failed for {file_path}: {str(e)}", exc_info=True)
-            return False
+            return []
+
+    def process_file(self, file_path: str, org_id: str = "default-org-123", user_id: str = "user-456", acl_tags: Optional[List[str]] = None) -> bool:
+        """
+        Processes a single file and returns True if ingestion succeeded.
+        """
+        chunks = self.process_document(file_path, org_id=org_id, user_id=user_id, acl_tags=acl_tags)
+        return len(chunks) > 0
 
 if __name__ == "__main__":
     # Example Usage

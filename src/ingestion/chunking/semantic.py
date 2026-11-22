@@ -1,12 +1,8 @@
+import re
 import numpy as np
-from typing import List, Dict, Any, Tuple
+from typing import List, Dict, Any, Optional
 from dataclasses import dataclass
-import nltk
-from sentence_transformers import SentenceTransformer
-from sklearn.metrics.pairwise import cosine_similarity
-
-# Ensure nltk data is available
-nltk.download('punkt', quiet=True)
+from src.core.embedder import get_embedder
 
 @dataclass
 class SemanticChunk:
@@ -20,20 +16,32 @@ class SemanticChunker:
     """
     Implements high-assurance semantic chunking using the 'Similarity Gap' mechanism.
     Splits documents where the semantic meaning changes significantly.
+    Uses FastEmbed (ONNX) and NumPy for lightweight, zero-dependency local execution.
     """
 
-    def __init__(self, model_name: str = "all-MiniLM-L6-v2", threshold: float = 0.85):
+    def __init__(self, model_name: Optional[str] = None, threshold: float = 0.85):
         """
         Args:
-            model_name: Local embedding model for boundary detection.
+            model_name: Optional embedding model name.
             threshold: Cosine similarity threshold. Below this, a break is triggered.
         """
-        self.model = SentenceTransformer(model_name)
+        self._embedder = get_embedder()
         self.threshold = threshold
 
     def _get_sentences(self, text: str) -> List[str]:
-        """Splits text into sentences using NLTK."""
-        return nltk.sent_tokenize(text)
+        """Splits text into sentences cleanly using regex."""
+        sentences = re.split(r'(?<=[.!?])\s+', text)
+        return [s.strip() for s in sentences if s.strip()]
+
+    def _calc_similarity(self, v1: List[float], v2: List[float]) -> float:
+        """Calculates cosine similarity between two vectors using NumPy."""
+        a = np.array(v1, dtype=float)
+        b = np.array(v2, dtype=float)
+        norm_a = np.linalg.norm(a)
+        norm_b = np.linalg.norm(b)
+        if norm_a == 0 or norm_b == 0:
+            return 0.0
+        return float(np.dot(a, b) / (norm_a * norm_b))
 
     def chunk(self, text: str, base_metadata: Dict[str, Any]) -> List[SemanticChunk]:
         """
@@ -43,16 +51,15 @@ class SemanticChunker:
         if not sentences:
             return []
 
-        # 1. Generate embeddings for all sentences
-        embeddings = self.model.encode(sentences)
+        # 1. Generate embeddings for all sentences using FastEmbed
+        embeddings = self._embedder.embed_documents(sentences)
 
         # 2. Identify boundaries using cosine similarity
         chunks = []
         current_chunk_sentences = [sentences[0]]
 
         for i in range(len(sentences) - 1):
-            # Calculate similarity between sentence i and i+1
-            sim = cosine_similarity([embeddings[i]], [embeddings[i+1]])[0][0]
+            sim = self._calc_similarity(embeddings[i], embeddings[i + 1])
 
             if sim < self.threshold:
                 # Semantic break detected
@@ -61,12 +68,12 @@ class SemanticChunker:
                     chunk_text,
                     base_metadata,
                     len(chunks),
-                    0, # start_index placeholder
+                    0,
                     i
                 ))
-                current_chunk_sentences = [sentences[i+1]]
+                current_chunk_sentences = [sentences[i + 1]]
             else:
-                current_chunk_sentences.append(sentences[i+1])
+                current_chunk_sentences.append(sentences[i + 1])
 
         # Add the final chunk
         if current_chunk_sentences:
@@ -75,7 +82,7 @@ class SemanticChunker:
                 chunk_text,
                 base_metadata,
                 len(chunks),
-                0, # start_index placeholder
+                0,
                 len(sentences) - 1
             ))
 
