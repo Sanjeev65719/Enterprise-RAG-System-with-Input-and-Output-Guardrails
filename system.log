@@ -52,3 +52,271 @@
 2026-09-30 12:29:25,942 - EnterpriseRAG - INFO - System logging initialized successfully.
 2026-09-30 12:31:08,286 - EnterpriseRAG - INFO - System logging initialized successfully.
 2026-09-30 12:31:09,477 - EnterpriseRAG - ERROR - OPENAI_API_KEY environment variable not set.
+2026-10-22 20:08:31,471 - EnterpriseRAG - INFO - System logging initialized successfully.
+2026-10-22 20:08:38,837 - EnterpriseRAG - ERROR - OPENAI_API_KEY environment variable not set.
+2026-10-22 20:10:48,504 - EnterpriseRAG - INFO - System logging initialized successfully.
+2026-10-22 20:10:55,885 - EnterpriseRAG - INFO - Initialized LLMGuard with model: gpt-4o
+2026-10-22 20:10:55,888 - EnterpriseRAG - INFO - Initialized LLMGuard with model: gpt-4o
+2026-10-22 20:10:55,893 - EnterpriseRAG - INFO - Initialized LLMGuard with model: gpt-4o
+2026-10-22 20:10:55,896 - EnterpriseRAG - INFO - Initialized LLMGuard with model: gpt-4o
+2026-10-22 20:10:55,898 - EnterpriseRAG - INFO - Initialized LLMGuard with model: gpt-4o
+2026-10-22 20:10:55,900 - EnterpriseRAG - INFO - Initialized LLMGuard with model: gpt-4o
+2026-10-22 20:10:55,903 - EnterpriseRAG - INFO - Connecting to Qdrant Cloud at https://32029b76-f530-48bf-8898-cea8ee724fb7.eu-west-2-0.aws.cloud.qdrant.io...
+2026-10-22 20:10:57,774 - httpx - INFO - HTTP Request: GET https://32029b76-f530-48bf-8898-cea8ee724fb7.eu-west-2-0.aws.cloud.qdrant.io:6333/collections "HTTP/1.1 200 OK"
+2026-10-22 20:10:57,779 - EnterpriseRAG - INFO - Initialized Generator with model: gpt-4o
+2026-10-23 17:32:45,949 - EnterpriseRAG - INFO - System logging initialized successfully.
+2026-10-23 17:32:57,134 - EnterpriseRAG - INFO - System logging initialized successfully.
+2026-10-23 17:32:58,186 - EnterpriseRAG - ERROR - OPENAI_API_KEY environment variable not set.
+2026-10-23 17:33:05,811 - EnterpriseRAG - INFO - System logging initialized successfully.
+2026-10-23 17:33:07,199 - EnterpriseRAG - INFO - Initialized LLMGuard with model: gpt-4o
+2026-10-23 17:33:07,205 - EnterpriseRAG - INFO - Initialized LLMGuard with model: gpt-4o
+2026-10-23 17:33:07,206 - EnterpriseRAG - INFO - Initialized LLMGuard with model: gpt-4o
+2026-10-23 17:33:07,206 - EnterpriseRAG - INFO - Initialized LLMGuard with model: gpt-4o
+2026-10-23 17:33:07,207 - EnterpriseRAG - INFO - Initialized LLMGuard with model: gpt-4o
+2026-10-23 17:33:07,207 - EnterpriseRAG - INFO - Initialized LLMGuard with model: gpt-4o
+2026-10-23 17:33:07,209 - EnterpriseRAG - INFO - Connecting to Qdrant Cloud at https://32029b76-f530-48bf-8898-cea8ee724fb7.eu-west-2-0.aws.cloud.qdrant.io...
+2026-10-23 17:33:08,401 - httpx - INFO - HTTP Request: GET https://32029b76-f530-48bf-8898-cea8ee724fb7.eu-west-2-0.aws.cloud.qdrant.io:6333/collections "HTTP/1.1 200 OK"
+2026-10-23 17:33:08,406 - EnterpriseRAG - INFO - Initialized Generator with model: gpt-4o
+2026-10-23 17:33:08,406 - EnterpriseRAG - INFO - Request started: 8471a75b-aa5d-4dc4-8a23-d539457d946b (Org: default-org)
+2026-10-23 17:33:08,488 - EnterpriseRAG - INFO - Running PII Masking Agent...
+2026-10-23 17:33:08,663 - httpx - INFO - HTTP Request: GET https://32029b76-f530-48bf-8898-cea8ee724fb7.eu-west-2-0.aws.cloud.qdrant.io:6333 "HTTP/1.1 200 OK"
+2026-10-23 17:33:13,978 - httpx2 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-23 17:33:13,979 - openai._base_client - INFO - Retrying request in 0.498064 seconds (retry 1 of 2)
+2026-10-23 17:33:15,133 - httpx2 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-23 17:33:15,133 - openai._base_client - INFO - Retrying request in 0.994553 seconds (retry 2 of 2)
+2026-10-23 17:33:16,731 - httpx2 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-23 17:33:16,733 - EnterpriseRAG - ERROR - PII Masking failed: Error code: 429 - {'error': {'message': 'You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/.', 'type': 'insufficient_quota', 'param': None, 'code': 'credit_balance_exhausted'}}
+2026-10-23 17:33:16,733 - EnterpriseRAG - INFO - Running Safety Agent...
+2026-10-23 17:33:17,050 - httpx2 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-23 17:33:17,050 - openai._base_client - INFO - Retrying request in 0.422705 seconds (retry 1 of 2)
+2026-10-23 17:33:17,778 - httpx2 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-23 17:33:17,779 - openai._base_client - INFO - Retrying request in 0.787355 seconds (retry 2 of 2)
+2026-10-23 17:33:19,193 - httpx2 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-23 17:33:19,194 - EnterpriseRAG - ERROR - LLMGuard API call failed: Error code: 429 - {'error': {'message': 'You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/.', 'type': 'insufficient_quota', 'param': None, 'code': 'credit_balance_exhausted'}}
+2026-10-23 17:33:19,194 - EnterpriseRAG - WARNING - Safety violation detected: Internal Error during validation: Error code: 429 - {'error': {'message': 'You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/.', 'type': 'insufficient_quota', 'param': None, 'code': 'credit_balance_exhausted'}}
+2026-10-23 17:34:03,225 - EnterpriseRAG - INFO - System logging initialized successfully.
+2026-10-23 17:34:04,280 - EnterpriseRAG - INFO - Initialized LLMGuard with model: gpt-4o
+2026-10-23 17:34:04,281 - EnterpriseRAG - INFO - Initialized LLMGuard with model: gpt-4o
+2026-10-23 17:34:04,282 - EnterpriseRAG - INFO - Initialized LLMGuard with model: gpt-4o
+2026-10-23 17:34:04,283 - EnterpriseRAG - INFO - Initialized LLMGuard with model: gpt-4o
+2026-10-23 17:34:04,283 - EnterpriseRAG - INFO - Initialized LLMGuard with model: gpt-4o
+2026-10-23 17:34:04,284 - EnterpriseRAG - INFO - Initialized LLMGuard with model: gpt-4o
+2026-10-23 17:34:04,285 - EnterpriseRAG - INFO - Connecting to Qdrant Cloud at https://32029b76-f530-48bf-8898-cea8ee724fb7.eu-west-2-0.aws.cloud.qdrant.io...
+2026-10-23 17:34:05,669 - httpx - INFO - HTTP Request: GET https://32029b76-f530-48bf-8898-cea8ee724fb7.eu-west-2-0.aws.cloud.qdrant.io:6333 "HTTP/1.1 200 OK"
+2026-10-23 17:34:05,673 - httpx - INFO - HTTP Request: GET https://32029b76-f530-48bf-8898-cea8ee724fb7.eu-west-2-0.aws.cloud.qdrant.io:6333/collections "HTTP/1.1 200 OK"
+2026-10-23 17:34:05,675 - EnterpriseRAG - INFO - Initialized Generator with model: gpt-4o
+2026-10-23 17:34:05,675 - EnterpriseRAG - INFO - Request started: c1492794-e10e-461e-af88-2a83c8e62a6c (Org: default-org)
+2026-10-23 17:34:05,675 - EnterpriseRAG - INFO - Running PII Masking Agent...
+2026-10-23 17:34:07,394 - httpx2 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-23 17:34:07,395 - openai._base_client - INFO - Retrying request in 0.459924 seconds (retry 1 of 2)
+2026-10-23 17:34:08,177 - httpx2 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-23 17:34:08,177 - openai._base_client - INFO - Retrying request in 0.935340 seconds (retry 2 of 2)
+2026-10-23 17:34:09,399 - httpx2 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-23 17:34:09,404 - EnterpriseRAG - ERROR - PII Masking failed: Error code: 429 - {'error': {'message': 'You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/.', 'type': 'insufficient_quota', 'param': None, 'code': 'credit_balance_exhausted'}}
+2026-10-23 17:34:09,404 - EnterpriseRAG - INFO - Running Safety Agent...
+2026-10-23 17:34:09,752 - httpx2 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-23 17:34:09,753 - openai._base_client - INFO - Retrying request in 0.417531 seconds (retry 1 of 2)
+2026-10-23 17:34:10,475 - httpx2 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-23 17:34:10,478 - openai._base_client - INFO - Retrying request in 0.806524 seconds (retry 2 of 2)
+2026-10-23 17:34:11,659 - httpx2 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-23 17:34:11,662 - EnterpriseRAG - ERROR - LLMGuard API call failed: Error code: 429 - {'error': {'message': 'You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/.', 'type': 'insufficient_quota', 'param': None, 'code': 'credit_balance_exhausted'}}
+2026-10-23 17:34:11,662 - EnterpriseRAG - WARNING - Safety violation detected: Internal Error during validation: Error code: 429 - {'error': {'message': 'You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/.', 'type': 'insufficient_quota', 'param': None, 'code': 'credit_balance_exhausted'}}
+2026-10-23 17:34:36,379 - EnterpriseRAG - INFO - System logging initialized successfully.
+2026-10-23 17:34:37,401 - EnterpriseRAG - INFO - API Request received: What is the security policy?
+2026-10-23 17:34:37,479 - EnterpriseRAG - INFO - Initialized LLMGuard with model: gpt-4o
+2026-10-23 17:34:37,480 - EnterpriseRAG - INFO - Initialized LLMGuard with model: gpt-4o
+2026-10-23 17:34:37,481 - EnterpriseRAG - INFO - Initialized LLMGuard with model: gpt-4o
+2026-10-23 17:34:37,482 - EnterpriseRAG - INFO - Initialized LLMGuard with model: gpt-4o
+2026-10-23 17:34:37,482 - EnterpriseRAG - INFO - Initialized LLMGuard with model: gpt-4o
+2026-10-23 17:34:37,483 - EnterpriseRAG - INFO - Initialized LLMGuard with model: gpt-4o
+2026-10-23 17:34:37,484 - EnterpriseRAG - INFO - Connecting to Qdrant Cloud at https://32029b76-f530-48bf-8898-cea8ee724fb7.eu-west-2-0.aws.cloud.qdrant.io...
+2026-10-23 17:34:39,025 - httpx - INFO - HTTP Request: GET https://32029b76-f530-48bf-8898-cea8ee724fb7.eu-west-2-0.aws.cloud.qdrant.io:6333/collections "HTTP/1.1 200 OK"
+2026-10-23 17:34:39,029 - EnterpriseRAG - INFO - Initialized Generator with model: gpt-4o
+2026-10-23 17:34:39,030 - EnterpriseRAG - INFO - Request started: 7ff5ec8b-a21b-42f4-ac47-7dfaf0b34453 (Org: default-org-123)
+2026-10-23 17:34:39,030 - EnterpriseRAG - INFO - Running PII Masking Agent...
+2026-10-23 17:34:39,057 - httpx - INFO - HTTP Request: GET https://32029b76-f530-48bf-8898-cea8ee724fb7.eu-west-2-0.aws.cloud.qdrant.io:6333 "HTTP/1.1 200 OK"
+2026-10-23 17:34:39,579 - httpx2 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-23 17:34:39,582 - openai._base_client - INFO - Retrying request in 0.448680 seconds (retry 1 of 2)
+2026-10-23 17:34:40,853 - httpx2 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-23 17:34:40,853 - openai._base_client - INFO - Retrying request in 0.957810 seconds (retry 2 of 2)
+2026-10-23 17:34:43,918 - httpx2 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-23 17:34:43,920 - EnterpriseRAG - ERROR - PII Masking failed: Error code: 429 - {'error': {'message': 'You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/.', 'type': 'insufficient_quota', 'param': None, 'code': 'credit_balance_exhausted'}}
+2026-10-23 17:34:43,920 - EnterpriseRAG - INFO - Running Safety Agent...
+2026-10-23 17:34:44,809 - httpx2 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-23 17:34:44,810 - openai._base_client - INFO - Retrying request in 0.428182 seconds (retry 1 of 2)
+2026-10-23 17:34:45,909 - httpx2 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-23 17:34:45,913 - openai._base_client - INFO - Retrying request in 0.822489 seconds (retry 2 of 2)
+2026-10-23 17:34:47,158 - httpx2 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-10-23 17:34:47,159 - EnterpriseRAG - ERROR - LLMGuard API call failed: Error code: 429 - {'error': {'message': 'You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/.', 'type': 'insufficient_quota', 'param': None, 'code': 'credit_balance_exhausted'}}
+2026-10-23 17:34:47,159 - EnterpriseRAG - WARNING - Safety violation detected: Internal Error during validation: Error code: 429 - {'error': {'message': 'You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/.', 'type': 'insufficient_quota', 'param': None, 'code': 'credit_balance_exhausted'}}
+2026-10-23 17:34:47,163 - httpx2 - INFO - HTTP Request: POST http://testserver/query "HTTP/1.1 200 OK"
+2026-11-21 23:23:25,099 - EnterpriseRAG - INFO - System logging initialized successfully.
+2026-11-21 23:23:38,824 - EnterpriseRAG - INFO - System logging initialized successfully.
+2026-11-22 18:27:16,664 - EnterpriseRAG - INFO - System logging initialized successfully.
+2026-11-22 18:27:16,665 - EnterpriseRAG - ERROR - No API key provided for LLM provider 'openai'. Please set GROQ_API_KEY (for free Groq inference) or OPENAI_API_KEY in your .env file.
+2026-11-22 18:30:23,256 - EnterpriseRAG - INFO - System logging initialized successfully.
+2026-11-22 18:30:23,256 - EnterpriseRAG - ERROR - No API key provided for LLM provider 'openai'. Please set GROQ_API_KEY (for free Groq inference) or OPENAI_API_KEY in your .env file.
+2026-11-22 18:30:55,825 - EnterpriseRAG - INFO - System logging initialized successfully.
+2026-11-22 20:54:22,558 - EnterpriseRAG - INFO - System logging initialized successfully.
+2026-11-22 20:54:24,818 - EnterpriseRAG - INFO - Initializing FastEmbed local model 'BAAI/bge-small-en-v1.5' (dim=384)...
+2026-11-22 20:54:25,740 - EnterpriseRAG - INFO - FastEmbed model initialized successfully.
+2026-11-22 20:54:42,955 - EnterpriseRAG - INFO - System logging initialized successfully.
+2026-11-22 20:54:50,745 - EnterpriseRAG - INFO - Connecting to Qdrant Local at localhost:6333...
+2026-11-22 20:55:29,106 - EnterpriseRAG - INFO - System logging initialized successfully.
+2026-11-22 20:55:30,243 - EnterpriseRAG - INFO - Connecting to Qdrant Local at localhost:6333...
+2026-11-22 20:56:54,571 - EnterpriseRAG - INFO - System logging initialized successfully.
+2026-11-22 20:56:55,527 - EnterpriseRAG - INFO - Connecting to Qdrant Cloud at https://32029b76-f530-48bf-8898-cea8ee724fb7.eu-west-2-0.aws.cloud.qdrant.io...
+2026-11-22 20:58:08,115 - EnterpriseRAG - INFO - System logging initialized successfully.
+2026-11-22 20:58:09,359 - EnterpriseRAG - INFO - Connecting to Qdrant Cloud at https://32029b76-f530-48bf-8898-cea8ee724fb7.eu-west-2-0.aws.cloud.qdrant.io...
+2026-11-22 20:58:09,382 - EnterpriseRAG - WARNING - Could not connect to Qdrant or initialize collection 'sentinel_rag': [Errno 11001] getaddrinfo failed. System will start, but vector searches will be unavailable until Qdrant is reachable.
+2026-11-22 20:58:32,633 - EnterpriseRAG - INFO - System logging initialized successfully.
+2026-11-22 20:58:35,218 - EnterpriseRAG - INFO - Initialized LLMGuard with provider 'groq' and model: llama-3.3-70b-versatile
+2026-11-22 20:58:35,219 - EnterpriseRAG - INFO - Initialized LLMGuard with provider 'groq' and model: llama-3.3-70b-versatile
+2026-11-22 20:58:35,220 - EnterpriseRAG - INFO - Initialized LLMGuard with provider 'groq' and model: llama-3.3-70b-versatile
+2026-11-22 20:58:35,220 - EnterpriseRAG - INFO - Initialized LLMGuard with provider 'groq' and model: llama-3.3-70b-versatile
+2026-11-22 20:58:35,221 - EnterpriseRAG - INFO - Initialized LLMGuard with provider 'groq' and model: llama-3.3-70b-versatile
+2026-11-22 20:58:35,221 - EnterpriseRAG - INFO - Initialized LLMGuard with provider 'groq' and model: llama-3.3-70b-versatile
+2026-11-22 20:58:35,223 - EnterpriseRAG - INFO - Connecting to Qdrant Cloud at https://32029b76-f530-48bf-8898-cea8ee724fb7.eu-west-2-0.aws.cloud.qdrant.io...
+2026-11-22 20:58:35,243 - EnterpriseRAG - WARNING - Could not connect to Qdrant or initialize collection 'sentinel_rag': [Errno 11001] getaddrinfo failed. System will start, but vector searches will be unavailable until Qdrant is reachable.
+2026-11-22 20:58:35,243 - EnterpriseRAG - INFO - Initialized Generator with provider 'groq' and model: llama-3.3-70b-versatile
+2026-11-22 21:37:41,234 - EnterpriseRAG - INFO - System logging initialized successfully.
+2026-11-22 21:37:54,832 - EnterpriseRAG - INFO - System logging initialized successfully.
+2026-11-22 21:38:25,681 - EnterpriseRAG - INFO - System logging initialized successfully.
+2026-11-22 21:38:54,777 - EnterpriseRAG - INFO - System logging initialized successfully.
+2026-11-22 21:40:10,900 - EnterpriseRAG - INFO - System logging initialized successfully.
+2026-11-22 21:40:15,022 - EnterpriseRAG - INFO - Initialized LLMGuard with provider 'groq' and model: llama-3.3-70b-versatile
+2026-11-22 21:40:15,024 - EnterpriseRAG - INFO - Initialized LLMGuard with provider 'groq' and model: llama-3.3-70b-versatile
+2026-11-22 21:40:15,025 - EnterpriseRAG - INFO - Initialized LLMGuard with provider 'groq' and model: llama-3.3-70b-versatile
+2026-11-22 21:40:18,610 - EnterpriseRAG - INFO - Running PII Masking Agent...
+2026-11-22 21:40:18,611 - EnterpriseRAG - INFO - Running Safety Agent...
+2026-11-22 21:40:18,611 - EnterpriseRAG - INFO - Running Domain Filter Agent...
+2026-11-22 21:40:18,612 - EnterpriseRAG - INFO - Running PII Masking Agent...
+2026-11-22 21:40:18,614 - EnterpriseRAG - INFO - Running Safety Agent...
+2026-11-22 21:40:18,614 - EnterpriseRAG - WARNING - Safety violation detected: Prompt injection detected
+2026-11-22 21:40:18,614 - EnterpriseRAG - INFO - Running PII Masking Agent...
+2026-11-22 21:40:18,615 - EnterpriseRAG - INFO - Running Safety Agent...
+2026-11-22 21:40:18,615 - EnterpriseRAG - INFO - Running Domain Filter Agent...
+2026-11-22 21:40:18,616 - EnterpriseRAG - INFO - Running PII Masking Agent...
+2026-11-22 21:40:18,616 - EnterpriseRAG - INFO - Running Safety Agent...
+2026-11-22 21:40:18,616 - EnterpriseRAG - INFO - Running Domain Filter Agent...
+2026-11-22 21:40:18,616 - EnterpriseRAG - INFO - Running PII Masking Agent...
+2026-11-22 21:40:18,617 - EnterpriseRAG - INFO - Running Safety Agent...
+2026-11-22 21:40:18,617 - EnterpriseRAG - WARNING - Safety violation detected: Malicious attack query rejected
+2026-11-22 21:40:18,617 - EnterpriseRAG - INFO - Running PII Masking Agent...
+2026-11-22 21:40:18,617 - EnterpriseRAG - INFO - PII detected and masked.
+2026-11-22 21:40:18,618 - EnterpriseRAG - INFO - Running Safety Agent...
+2026-11-22 21:40:18,618 - EnterpriseRAG - INFO - Running Domain Filter Agent...
+2026-11-22 21:40:18,619 - EnterpriseRAG - INFO - Initialized LLMGuard with provider 'groq' and model: llama-3.3-70b-versatile
+2026-11-22 21:40:18,620 - EnterpriseRAG - INFO - Initialized LLMGuard with provider 'groq' and model: llama-3.3-70b-versatile
+2026-11-22 21:40:18,620 - EnterpriseRAG - INFO - Initialized LLMGuard with provider 'groq' and model: llama-3.3-70b-versatile
+2026-11-22 21:40:18,621 - EnterpriseRAG - INFO - Running Fact-Checker Agent...
+2026-11-22 21:40:18,622 - EnterpriseRAG - INFO - Running Relevance Agent...
+2026-11-22 21:40:18,622 - EnterpriseRAG - INFO - Running Compliance Agent...
+2026-11-22 21:40:18,622 - EnterpriseRAG - INFO - Running Fact-Checker Agent...
+2026-11-22 21:40:18,623 - EnterpriseRAG - WARNING - Output Guardrail failed: Hallucination detected
+2026-11-22 21:40:18,623 - EnterpriseRAG - INFO - Running Fact-Checker Agent...
+2026-11-22 21:40:18,623 - EnterpriseRAG - INFO - Running Relevance Agent...
+2026-11-22 21:40:18,623 - EnterpriseRAG - WARNING - Output Guardrail failed: Too brief
+2026-11-22 21:40:18,623 - EnterpriseRAG - INFO - Running Fact-Checker Agent...
+2026-11-22 21:40:18,624 - EnterpriseRAG - INFO - Running Relevance Agent...
+2026-11-22 21:40:18,624 - EnterpriseRAG - INFO - Running Compliance Agent...
+2026-11-22 21:47:01,922 - EnterpriseRAG - INFO - System logging initialized successfully.
+2026-11-22 21:47:02,980 - EnterpriseRAG - INFO - Initializing FastEmbed local model 'BAAI/bge-small-en-v1.5' (dim=384)...
+2026-11-22 21:47:03,242 - EnterpriseRAG - INFO - FastEmbed model initialized successfully.
+2026-11-22 22:00:26,295 - EnterpriseRAG - INFO - System logging initialized successfully.
+2026-11-22 22:19:16,481 - EnterpriseRAG - INFO - System logging initialized successfully.
+2026-11-22 22:24:04,478 - EnterpriseRAG - INFO - System logging initialized successfully.
+2026-11-22 22:24:11,711 - EnterpriseRAG - INFO - Connecting to Qdrant Cloud at https://32029b76-f530-48bf-8898-cea8ee724fb7.eu-west-2-0.aws.cloud.qdrant.io...
+2026-11-22 22:24:12,820 - EnterpriseRAG - WARNING - Could not connect to Qdrant or initialize collection 'sentinel_rag': [Errno 11001] getaddrinfo failed. System will start, but vector searches will be unavailable until Qdrant is reachable.
+2026-11-22 22:24:12,823 - EnterpriseRAG - INFO - Starting high-assurance ingestion for: test_pipeline_doc.txt
+2026-11-22 22:24:12,949 - EnterpriseRAG - INFO - Detected MIME type: text/plain
+2026-11-22 22:24:12,949 - EnterpriseRAG - INFO - Initializing FastEmbed local model 'BAAI/bge-small-en-v1.5' (dim=384)...
+2026-11-22 22:24:14,190 - EnterpriseRAG - INFO - FastEmbed model initialized successfully.
+2026-11-22 22:24:14,273 - EnterpriseRAG - ERROR - Pipeline failed for test_pipeline_doc.txt: 2 validation errors for DocumentMetadata
+org_id
+  Input should be a valid UUID, invalid character: found `u` at 5 [type=uuid_parsing, input_value='default-org-123', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/uuid_parsing
+user_id
+  Input should be a valid UUID, invalid character: found `u` at 1 [type=uuid_parsing, input_value='user-456', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/uuid_parsing
+Traceback (most recent call last):
+  File "C:\Users\meera\Downloads\SentinelRAG\src\ingestion\pipeline.py", line 55, in process_document
+    doc_metadata = DocumentMetadata(
+                   ^^^^^^^^^^^^^^^^^
+  File "C:\Users\meera\Downloads\SentinelRAG\.venv\Lib\site-packages\pydantic\main.py", line 263, in __init__
+    validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pydantic_core._pydantic_core.ValidationError: 2 validation errors for DocumentMetadata
+org_id
+  Input should be a valid UUID, invalid character: found `u` at 5 [type=uuid_parsing, input_value='default-org-123', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/uuid_parsing
+user_id
+  Input should be a valid UUID, invalid character: found `u` at 1 [type=uuid_parsing, input_value='user-456', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.13/v/uuid_parsing
+2026-11-22 22:33:59,732 - EnterpriseRAG - INFO - System logging initialized successfully.
+2026-11-22 22:34:01,292 - EnterpriseRAG - INFO - Connecting to Qdrant Cloud at https://32029b76-f530-48bf-8898-cea8ee724fb7.eu-west-2-0.aws.cloud.qdrant.io...
+2026-11-22 22:34:01,562 - EnterpriseRAG - WARNING - Could not connect to Qdrant or initialize collection 'sentinel_rag': [Errno 11001] getaddrinfo failed. System will start, but vector searches will be unavailable until Qdrant is reachable.
+2026-11-22 22:34:01,562 - EnterpriseRAG - INFO - Starting high-assurance ingestion for: test_pipeline_doc.txt
+2026-11-22 22:34:01,591 - EnterpriseRAG - INFO - Detected MIME type: text/plain
+2026-11-22 22:34:01,593 - EnterpriseRAG - INFO - Initializing FastEmbed local model 'BAAI/bge-small-en-v1.5' (dim=384)...
+2026-11-22 22:34:02,073 - EnterpriseRAG - INFO - FastEmbed model initialized successfully.
+2026-11-22 22:34:02,104 - EnterpriseRAG - INFO - Indexing 2 chunks using fastembed (BAAI/bge-small-en-v1.5)...
+2026-11-22 22:34:02,116 - EnterpriseRAG - WARNING - Could not upsert vector into collection 'sentinel_rag': [Errno 11001] getaddrinfo failed
+2026-11-22 22:34:02,118 - EnterpriseRAG - WARNING - Could not upsert vector into collection 'sentinel_rag': [Errno 11001] getaddrinfo failed
+2026-11-22 22:34:02,118 - EnterpriseRAG - INFO - Batch ingestion complete.
+2026-11-22 22:34:02,118 - EnterpriseRAG - INFO - Successfully ingested 2 chunks from test_pipeline_doc.txt
+2026-11-22 22:34:57,132 - EnterpriseRAG - INFO - System logging initialized successfully.
+2026-11-22 22:34:59,313 - EnterpriseRAG - INFO - Starting End-to-End System Integration Test...
+2026-11-22 22:34:59,313 - EnterpriseRAG - INFO - Connecting to Qdrant Cloud at https://32029b76-f530-48bf-8898-cea8ee724fb7.eu-west-2-0.aws.cloud.qdrant.io...
+2026-11-22 22:34:59,576 - EnterpriseRAG - WARNING - Could not connect to Qdrant or initialize collection 'sentinel_rag': [Errno 11001] getaddrinfo failed. System will start, but vector searches will be unavailable until Qdrant is reachable.
+2026-11-22 22:34:59,579 - EnterpriseRAG - INFO - Starting high-assurance ingestion for: test_doc.txt
+2026-11-22 22:34:59,596 - EnterpriseRAG - INFO - Detected MIME type: text/plain
+2026-11-22 22:34:59,606 - EnterpriseRAG - INFO - Initializing FastEmbed local model 'BAAI/bge-small-en-v1.5' (dim=384)...
+2026-11-22 22:34:59,950 - EnterpriseRAG - INFO - FastEmbed model initialized successfully.
+2026-11-22 22:34:59,971 - EnterpriseRAG - INFO - Indexing 2 chunks using fastembed (BAAI/bge-small-en-v1.5)...
+2026-11-22 22:34:59,996 - EnterpriseRAG - WARNING - Could not upsert vector into collection 'sentinel_rag': [Errno 11001] getaddrinfo failed
+2026-11-22 22:34:59,998 - EnterpriseRAG - WARNING - Could not upsert vector into collection 'sentinel_rag': [Errno 11001] getaddrinfo failed
+2026-11-22 22:34:59,998 - EnterpriseRAG - INFO - Batch ingestion complete.
+2026-11-22 22:34:59,998 - EnterpriseRAG - INFO - Successfully ingested 2 chunks from test_doc.txt
+2026-11-22 22:35:00,214 - EnterpriseRAG - INFO - Initialized LLMGuard with provider 'groq' and model: llama-3.3-70b-versatile
+2026-11-22 22:35:00,214 - EnterpriseRAG - INFO - Initialized LLMGuard with provider 'groq' and model: llama-3.3-70b-versatile
+2026-11-22 22:35:00,216 - EnterpriseRAG - INFO - Initialized LLMGuard with provider 'groq' and model: llama-3.3-70b-versatile
+2026-11-22 22:35:00,216 - EnterpriseRAG - INFO - Initialized LLMGuard with provider 'groq' and model: llama-3.3-70b-versatile
+2026-11-22 22:35:00,216 - EnterpriseRAG - INFO - Initialized LLMGuard with provider 'groq' and model: llama-3.3-70b-versatile
+2026-11-22 22:35:00,217 - EnterpriseRAG - INFO - Initialized LLMGuard with provider 'groq' and model: llama-3.3-70b-versatile
+2026-11-22 22:35:00,218 - EnterpriseRAG - INFO - Connecting to Qdrant Cloud at https://32029b76-f530-48bf-8898-cea8ee724fb7.eu-west-2-0.aws.cloud.qdrant.io...
+2026-11-22 22:35:00,489 - EnterpriseRAG - WARNING - Could not connect to Qdrant or initialize collection 'sentinel_rag': [Errno 11001] getaddrinfo failed. System will start, but vector searches will be unavailable until Qdrant is reachable.
+2026-11-22 22:35:00,491 - EnterpriseRAG - INFO - Initialized Generator with provider 'groq' and model: llama-3.3-70b-versatile
+2026-11-22 22:35:00,491 - EnterpriseRAG - INFO - Request started: 1f18ea2c-036c-4c1c-be0a-66176ff78f8a (Org: default-org)
+2026-11-22 22:35:00,491 - EnterpriseRAG - INFO - Running PII Masking Agent...
+2026-11-22 22:35:01,596 - openai._base_client - INFO - Retrying request in 0.406744 seconds (retry 1 of 2)
+2026-11-22 22:35:02,007 - openai._base_client - INFO - Retrying request in 0.939370 seconds (retry 2 of 2)
+2026-11-22 22:35:02,953 - EnterpriseRAG - ERROR - PII Masking failed: Connection error.
+2026-11-22 22:35:02,953 - EnterpriseRAG - INFO - Running Safety Agent...
+2026-11-22 22:35:02,956 - openai._base_client - INFO - Retrying request in 0.418797 seconds (retry 1 of 2)
+2026-11-22 22:35:03,378 - openai._base_client - INFO - Retrying request in 0.805430 seconds (retry 2 of 2)
+2026-11-22 22:35:04,188 - EnterpriseRAG - ERROR - LLMGuard API call failed: Connection error.
+2026-11-22 22:35:04,189 - EnterpriseRAG - WARNING - Safety violation detected: Internal Error during validation: Connection error.
+2026-11-22 22:35:04,189 - EnterpriseRAG - INFO - Request started: 40499991-0c23-4588-83fb-d5a820470f73 (Org: default-org)
+2026-11-22 22:35:04,189 - EnterpriseRAG - INFO - Running PII Masking Agent...
+2026-11-22 22:35:04,193 - openai._base_client - INFO - Retrying request in 0.444827 seconds (retry 1 of 2)
+2026-11-22 22:35:04,641 - openai._base_client - INFO - Retrying request in 0.764674 seconds (retry 2 of 2)
+2026-11-22 22:35:05,409 - EnterpriseRAG - ERROR - PII Masking failed: Connection error.
+2026-11-22 22:35:05,409 - EnterpriseRAG - INFO - Running Safety Agent...
+2026-11-22 22:35:05,414 - openai._base_client - INFO - Retrying request in 0.445257 seconds (retry 1 of 2)
+2026-11-22 22:35:05,862 - openai._base_client - INFO - Retrying request in 0.820955 seconds (retry 2 of 2)
+2026-11-22 22:35:06,688 - EnterpriseRAG - ERROR - LLMGuard API call failed: Connection error.
+2026-11-22 22:35:06,689 - EnterpriseRAG - WARNING - Safety violation detected: Internal Error during validation: Connection error.
+2026-11-22 22:35:06,689 - EnterpriseRAG - INFO - Request started: ccb7187d-de41-4885-9401-9635a1e9d7aa (Org: default-org)
+2026-11-22 22:35:06,689 - EnterpriseRAG - INFO - Running PII Masking Agent...
+2026-11-22 22:35:06,694 - openai._base_client - INFO - Retrying request in 0.377586 seconds (retry 1 of 2)
+2026-11-22 22:35:07,076 - openai._base_client - INFO - Retrying request in 0.869135 seconds (retry 2 of 2)
+2026-11-22 22:35:07,949 - EnterpriseRAG - ERROR - PII Masking failed: Connection error.
+2026-11-22 22:35:07,949 - EnterpriseRAG - INFO - Running Safety Agent...
+2026-11-22 22:35:07,954 - openai._base_client - INFO - Retrying request in 0.440600 seconds (retry 1 of 2)
+2026-11-22 22:35:08,398 - openai._base_client - INFO - Retrying request in 0.950201 seconds (retry 2 of 2)
+2026-11-22 22:35:09,353 - EnterpriseRAG - ERROR - LLMGuard API call failed: Connection error.
+2026-11-22 22:35:09,355 - EnterpriseRAG - WARNING - Safety violation detected: Internal Error during validation: Connection error.
+2026-11-22 22:49:58,018 - EnterpriseRAG - INFO - System logging initialized successfully.
+2026-11-22 22:49:59,049 - EnterpriseRAG - INFO - Initializing FastEmbed local model 'BAAI/bge-small-en-v1.5' (dim=384)...
+2026-11-22 22:49:59,363 - EnterpriseRAG - INFO - FastEmbed model initialized successfully.

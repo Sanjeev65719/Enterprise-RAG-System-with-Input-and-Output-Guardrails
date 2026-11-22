@@ -1,0 +1,1 @@
+Enterprise Security Policy: All PII must be encrypted. Contact security@example.com for details.
