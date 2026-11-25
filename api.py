@@ -1,14 +1,16 @@
 import os
+from pathlib import Path
 from typing import List, Optional, Dict, Any
 from dotenv import load_dotenv
 
 # Ensure environment variables are loaded
 load_dotenv()
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, UploadFile, File, Form
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 from src.orchestrator.graph import RAGOrchestrator
+from src.ingestion.pipeline import IngestionPipeline
 from src.core.logger import logger
 import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
@@ -25,12 +27,19 @@ app.add_middleware(
 )
 
 _orchestrator = None
+_ingestion_pipeline = None
 
 def get_orchestrator():
     global _orchestrator
     if _orchestrator is None:
         _orchestrator = RAGOrchestrator()
     return _orchestrator
+
+def get_ingestion_pipeline():
+    global _ingestion_pipeline
+    if _ingestion_pipeline is None:
+        _ingestion_pipeline = IngestionPipeline()
+    return _ingestion_pipeline
 
 
 class QueryRequest(BaseModel):
@@ -94,6 +103,58 @@ async def ask_agent(request: QueryRequest):
                 "request_id": None,
                 "verdict": "ERROR",
                 "audit_trail": []
+            }
+        )
+
+
+@app.post("/api/ingest")
+async def ingest_document(
+    file: UploadFile = File(...),
+    org_id: Optional[str] = Form("default-org-123"),
+    user_id: Optional[str] = Form("user-456"),
+    acl_tags: Optional[str] = Form("INTERNAL")
+):
+    """Uploads and ingests a document directly into the vector store."""
+    try:
+        import tempfile
+        import shutil
+
+        # Save uploaded file temporarily to disk so parser can process it
+        suffix = Path(file.filename or "upload.txt").suffix or ".txt"
+        with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp_file:
+            shutil.copyfileobj(file.file, tmp_file)
+            tmp_path = tmp_file.name
+
+        pipeline = get_ingestion_pipeline()
+        tags_list = [t.strip() for t in acl_tags.split(",")] if acl_tags else ["INTERNAL"]
+
+        chunks = pipeline.process_document(
+            file_path=tmp_path,
+            org_id=org_id or "default-org-123",
+            user_id=user_id or "user-456",
+            acl_tags=tags_list
+        )
+
+        try:
+            os.remove(tmp_path)
+        except Exception:
+            pass
+
+        return {
+            "status": "success",
+            "filename": file.filename,
+            "chunks_ingested": len(chunks),
+            "message": f"Successfully ingested {len(chunks)} chunks into vector store."
+        }
+    except Exception as e:
+        logger.error(f"Ingestion API Error: {str(e)}", exc_info=True)
+        return JSONResponse(
+            status_code=500,
+            content={
+                "status": "error",
+                "filename": file.filename,
+                "chunks_ingested": 0,
+                "message": f"Failed to ingest document: {str(e)}"
             }
         )
 

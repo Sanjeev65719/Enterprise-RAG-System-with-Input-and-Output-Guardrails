@@ -625,8 +625,9 @@
       <div id="input-container" class="rounded-xl p-2.5 backdrop-blur-xl shadow-2xl input-focus-glow transition-all duration-200"
         style="background:#0d111df8; border:1px solid #1e293b;">
         <div class="flex items-center gap-2">
-          <button class="p-1 rounded-lg transition-colors hover:bg-[#1e2638]" style="color:#64748b;" title="Attach document"
-            onmouseover="this.style.color='#06b6d4'" onmouseout="this.style.color='#64748b'" onclick="alert('Document indexing: Select files in your backend corpus to ingest.')">
+          <input type="file" id="file-upload-input" class="hidden" accept=".txt,.md,.pdf,.docx,.json,.csv" onchange="handleFileUpload(event)"/>
+          <button class="p-1 rounded-lg transition-colors hover:bg-[#1e2638]" style="color:#64748b;" title="Attach & Ingest Document"
+            onmouseover="this.style.color='#06b6d4'" onmouseout="this.style.color='#64748b'" onclick="document.getElementById('file-upload-input').click()">
             <span class="material-symbols-outlined text-[20px]">attach_file</span>
           </button>
           <input id="chat-input"
@@ -1120,6 +1121,67 @@
     chatInput.value = text;
     switchTab('query');
     handleSend();
+  }
+
+  async function handleFileUpload(event) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    // Reset input so user can upload the same file again if needed
+    event.target.value = '';
+
+    const fileName = file.name;
+    chatContainer.insertAdjacentHTML('beforeend', createUserBubble(`📎 Uploading & indexing document: ${fileName}`));
+    scrollToBottom();
+
+    const loadingId = 'upload-' + Date.now();
+    chatContainer.insertAdjacentHTML('beforeend', `
+      <div id="${loadingId}" class="flex items-start gap-2.5 animate-in">
+        <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 mt-0.5"
+          style="background:rgba(6,182,212,0.15); border:1px solid rgba(6,182,212,0.3);">
+          <span class="material-symbols-outlined text-[16px]" style="color:#06b6d4;">upload_file</span>
+        </div>
+        <div class="rounded-2xl rounded-tl-sm px-4 py-3 flex items-center gap-3"
+          style="background:#0d111d; border:1px solid #1e293b; min-width:140px;">
+          <div class="flex items-center gap-1.5">
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+          </div>
+          <span class="font-mono text-[10px]" style="color:#64748b;">Parsing, embedding &amp; indexing <strong>${escapeHtml(fileName)}</strong>&hellip;</span>
+        </div>
+      </div>
+    `);
+    scrollToBottom();
+
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('org_id', 'default-org-123');
+      formData.append('user_id', 'user-456');
+      formData.append('acl_tags', 'INTERNAL');
+
+      const res = await fetch('/api/ingest', {
+        method: 'POST',
+        body: formData
+      });
+
+      const data = await res.json();
+      document.getElementById(loadingId)?.remove();
+
+      if (res.ok && data.status === 'success') {
+        const msg = `✅ **${escapeHtml(fileName)}** was successfully indexed! Embedded **${data.chunks_ingested} semantic chunks** into your Qdrant vector store. You can now ask questions about it.`;
+        chatContainer.insertAdjacentHTML('beforeend', createAiBubble(msg, false));
+      } else {
+        const errorMsg = data.message || `Failed to ingest document (HTTP ${res.status})`;
+        chatContainer.insertAdjacentHTML('beforeend', createAiBubble(errorMsg, true));
+      }
+      scrollToBottom();
+    } catch (err) {
+      document.getElementById(loadingId)?.remove();
+      chatContainer.insertAdjacentHTML('beforeend', createAiBubble(`Upload error: ${err.message}`, true));
+      scrollToBottom();
+    }
   }
 
   async function handleSend() {
