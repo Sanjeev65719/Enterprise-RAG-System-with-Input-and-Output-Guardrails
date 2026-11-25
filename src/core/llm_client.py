@@ -41,7 +41,7 @@ def get_llm_client_and_model(preferred_model: Optional[str] = None) -> Tuple[Ope
         provider = "groq"
         api_key = groq_key
         base_url = _clean_env("GROQ_BASE_URL", "https://api.groq.com/openai/v1")
-        model = preferred_model or _clean_env("GROQ_MODEL", "llama-3.3-70b-versatile")
+        model = preferred_model or _clean_env("GROQ_MODEL", "openai/gpt-oss-120b")
     elif provider_env == "ollama":
         provider = "ollama"
         api_key = "ollama"
