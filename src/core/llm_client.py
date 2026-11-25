@@ -18,6 +18,11 @@ except ImportError:
 from openai import OpenAI
 from src.core.logger import logger
 
+def _clean_env(name: str, default: str = "") -> str:
+    """Reads an environment variable and strips surrounding whitespace and quotes."""
+    return os.getenv(name, default).strip().strip('"').strip("'").strip()
+
+
 def get_llm_client_and_model(preferred_model: Optional[str] = None) -> Tuple[OpenAI, str, str]:
     """
     Returns a configured OpenAI-compatible client, the model name, and the provider name.
@@ -28,25 +33,25 @@ def get_llm_client_and_model(preferred_model: Optional[str] = None) -> Tuple[Ope
     2. If GROQ_API_KEY is present and OPENAI_API_KEY is missing/empty, defaults to 'groq'
     3. Defaults to 'openai'
     """
-    provider_env = os.getenv("LLM_PROVIDER", "").strip().lower()
-    groq_key = os.getenv("GROQ_API_KEY", "").strip()
-    openai_key = os.getenv("OPENAI_API_KEY", "").strip()
+    provider_env = _clean_env("LLM_PROVIDER").lower()
+    groq_key = _clean_env("GROQ_API_KEY")
+    openai_key = _clean_env("OPENAI_API_KEY")
 
     if provider_env == "groq" or (groq_key and not openai_key) or (groq_key and provider_env != "openai"):
         provider = "groq"
         api_key = groq_key
-        base_url = os.getenv("GROQ_BASE_URL", "https://api.groq.com/openai/v1")
-        model = preferred_model or os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
+        base_url = _clean_env("GROQ_BASE_URL", "https://api.groq.com/openai/v1")
+        model = preferred_model or _clean_env("GROQ_MODEL", "llama-3.3-70b-versatile")
     elif provider_env == "ollama":
         provider = "ollama"
         api_key = "ollama"
-        base_url = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434/v1")
-        model = preferred_model or os.getenv("OLLAMA_MODEL", "llama3.1:8b")
+        base_url = _clean_env("OLLAMA_BASE_URL", "http://localhost:11434/v1")
+        model = preferred_model or _clean_env("OLLAMA_MODEL", "llama3.1:8b")
     else:
         provider = "openai"
         api_key = openai_key
         base_url = None
-        model = preferred_model or os.getenv("OPENAI_MODEL", "gpt-4o")
+        model = preferred_model or _clean_env("OPENAI_MODEL", "gpt-4o")
 
     if not api_key:
         error_msg = (
