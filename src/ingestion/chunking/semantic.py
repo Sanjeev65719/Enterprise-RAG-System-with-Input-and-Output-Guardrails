@@ -51,8 +51,12 @@ class SemanticChunker:
         if not sentences:
             return []
 
-        # 1. Generate embeddings for all sentences using FastEmbed
-        embeddings = self._embedder.embed_documents(sentences)
+        # 1. Generate embeddings for all sentences using FastEmbed in memory-safe batches
+        embeddings = []
+        batch_size = 32
+        for i in range(0, len(sentences), batch_size):
+            batch = sentences[i:i + batch_size]
+            embeddings.extend(self._embedder.embed_documents(batch))
 
         # 2. Identify boundaries using cosine similarity
         chunks = []

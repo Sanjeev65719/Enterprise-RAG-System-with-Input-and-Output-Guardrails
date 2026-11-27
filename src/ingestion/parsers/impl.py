@@ -98,7 +98,35 @@ class UnstructuredParser(AbstractParser):
                     ))
                 return parsed_elements
             else:
-                # Lightweight native fallback for text, markdown, and plain files
+                # Lightweight native fallback: use pypdf for PDFs, plain-text reader for text/md/csv
+                parsed_elements = []
+                if file_path.lower().endswith(".pdf"):
+                    try:
+                        from pypdf import PdfReader
+                    except ImportError:
+                        raise RuntimeError("pypdf is required to parse PDF files. Please install pypdf.")
+
+                    reader = PdfReader(file_path)
+                    for page_idx, page in enumerate(reader.pages, start=1):
+                        page_text = (page.extract_text() or "").strip()
+                        if not page_text:
+                            continue
+                        paragraphs = [p.strip() for p in page_text.split("\n\n") if p.strip()]
+                        if not paragraphs:
+                            paragraphs = [page_text]
+                        for idx, para in enumerate(paragraphs):
+                            parsed_elements.append(ParsedElement(
+                                text=para,
+                                element_type="NarrativeText",
+                                page_number=page_idx,
+                                metadata={
+                                    "filename": os.path.basename(file_path),
+                                    "filetype": "application/pdf",
+                                    "section_index": idx
+                                }
+                            ))
+                    return parsed_elements
+
                 with open(file_path, "r", encoding="utf-8", errors="replace") as f:
                     content = f.read()
 
@@ -106,7 +134,6 @@ class UnstructuredParser(AbstractParser):
                 if not paragraphs and content.strip():
                     paragraphs = [content.strip()]
 
-                parsed_elements = []
                 for idx, para in enumerate(paragraphs):
                     elem_type = "Title" if para.startswith("#") else "NarrativeText"
                     parsed_elements.append(ParsedElement(
